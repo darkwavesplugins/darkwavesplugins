@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Darkwave Bundle: plugins, bancos y presets para sonido ambiental</title>
+<meta name="description" content="Darkwave Bundle reúne seis plugins, bancos de presets y tutoriales en vídeo para crear texturas y efectos ambientales.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#000;--fg:#F4F8FF;--mut:#8D9BB8;--line:#10224A;--navy:#0B1F4D;--b1:#1D4ED8;--b2:#3B82F6;--b3:#8FBBFF;--f:'Sora',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px);background:#000}
+body{margin:0;background:#000;color:var(--fg);font:400 1rem/1.6 var(--f);-webkit-font-smoothing:antialiased;overflow-x:clip}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:#000;z-index:60}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--b3);outline-offset:3px}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{font-weight:700;letter-spacing:-.03em}
+.w{max-width:1180px;margin:0 auto;padding:0 24px;position:relative}
+canvas{display:block;width:100%;height:100%}
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+.fog{position:fixed;z-index:0;pointer-events:none;border-radius:50%;filter:blur(90px)}
+.f1{width:60vw;height:60vw;left:-15vw;top:10vh;background:radial-gradient(circle,rgba(29,78,216,.34),transparent 68%);animation:drift 26s ease-in-out infinite}
+.f2{width:55vw;height:55vw;right:-18vw;top:55vh;background:radial-gradient(circle,rgba(59,130,246,.2),transparent 68%);animation:drift 32s ease-in-out infinite reverse}
+.main,footer{position:relative;z-index:2}
+
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(0,0,0,.55);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);border-bottom:1px solid rgba(16,34,74,.7)}
+.ni{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.1rem;letter-spacing:-.02em;white-space:nowrap}
+.logo svg{width:26px;height:26px;animation:spin 40s linear infinite}
+.nl{display:flex;gap:28px;font-size:.92rem;color:var(--mut)}
+.nl a{transition:color .3s}.nl a:hover{color:var(--b3)}
+.btn{display:inline-block;padding:12px 26px;border-radius:99px;background:var(--b1);font-weight:600;font-size:.92rem;border:1px solid var(--b2);transition:background .3s,box-shadow .3s}
+.btn:hover{background:var(--b2);box-shadow:0 0 30px rgba(59,130,246,.5)}
+.btn.g{background:transparent;color:var(--b3);border-color:var(--line)}
+.btn.g:hover{border-color:var(--b2);background:rgba(29,78,216,.15)}
+.nb{padding:9px 20px}
+.mb{display:none;background:none;border:1px solid var(--line);border-radius:10px;color:var(--fg);width:42px;height:42px;font-size:1.2rem;cursor:pointer}
+
+.hero{min-height:calc(100svh - 68px);overflow:hidden}
+.hc{padding-top:clamp(48px,9vh,100px)}
+h1{font-size:clamp(3rem,9vw,7.4rem);line-height:.98;animation:rise 1.4s cubic-bezier(.2,.7,.2,1) both}
+h1 span{display:block;background:linear-gradient(100deg,#1D4ED8,#3B82F6 30%,#8FBBFF 50%,#3B82F6 70%,#1D4ED8);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 7s linear infinite}
+.hfx{position:relative;height:clamp(240px,42vh,420px);-webkit-mask-image:radial-gradient(ellipse closest-side at 50% 50%,#000 22%,rgba(0,0,0,.55) 58%,rgba(0,0,0,.18) 82%,transparent 100%);mask-image:radial-gradient(ellipse closest-side at 50% 50%,#000 22%,rgba(0,0,0,.55) 58%,rgba(0,0,0,.18) 82%,transparent 100%)}
+.hfx canvas{position:absolute;inset:0}
+.hc2{padding-top:8px;padding-bottom:72px}
+.lead{max-width:50ch;font-size:1.1rem;font-weight:300;color:#B7C3DC;animation:rise 1.4s .25s cubic-bezier(.2,.7,.2,1) both}
+.cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px}
+
+.sec{padding:96px 0 112px}
+.sh{max-width:52ch;margin-bottom:56px}
+.sh h2{font-size:clamp(1.9rem,3.8vw,3rem);line-height:1.08}
+.sh p{margin-top:16px;color:var(--mut);font-size:1.05rem}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.tile{position:relative;padding:14px 14px 26px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(160deg,rgba(11,31,77,.32),rgba(0,0,0,.45));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);overflow:hidden;transition:border-color .4s,transform .5s cubic-bezier(.2,.7,.2,1)}
+.tile:hover{border-color:var(--c,var(--b2));transform:translateY(-6px)}
+.scr{aspect-ratio:5/3;border-radius:12px;overflow:hidden;background:#000;border:1px solid rgba(16,34,74,.9)}
+.tile h3{margin:20px 10px 0;font-size:1.2rem}
+.tile p{margin:8px 10px 0;font-size:.93rem;color:var(--mut)}
+.tile p b{color:var(--fg);font-weight:600}
+.tag{display:inline-block;margin:14px 10px 0;padding:4px 12px;border:1px solid var(--c,var(--b1));border-radius:99px;font-size:.75rem;font-weight:600;color:var(--c,var(--b3));background:rgba(29,78,216,.1)}
+button.btn{font:inherit;font-weight:600;font-size:.92rem;color:var(--fg);cursor:pointer}
+button.btn.g{color:var(--b3)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 26px}.chips span{padding:5px 14px;border:1px solid var(--line);border-radius:99px;font-size:.82rem;font-weight:600;color:var(--b3);background:rgba(29,78,216,.14)}
+
+.bun{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;padding:28px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(160deg,rgba(11,31,77,.4),rgba(0,0,0,.6));margin-bottom:64px}
+.bun .scr{aspect-ratio:16/10}
+.bun h3{font-size:clamp(1.5rem,3vw,2.1rem)}
+.bun ul{list-style:none;padding:0;margin:18px 0 26px;color:#B7C3DC;font-weight:300}
+.bun li{padding:6px 0 6px 22px;position:relative}
+.bun li::before{content:"";position:absolute;left:0;top:15px;width:8px;height:8px;border-radius:50%;background:var(--b2);box-shadow:0 0 10px var(--b2)}
+
+.bk{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.bank{display:flex;align-items:center;gap:20px;padding:18px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(160deg,rgba(11,31,77,.4),rgba(0,0,0,.6));transition:border-color .3s,box-shadow .3s}
+.bank:hover{border-color:var(--b2);box-shadow:0 0 28px rgba(59,130,246,.25)}
+.bank .scr{flex:0 0 120px;aspect-ratio:1}
+.bank h3{font-size:1.1rem}
+.bank p{color:var(--mut);font-size:.9rem;margin-top:4px}
+.bank b{color:var(--b3)}
+
+.vd{position:relative}
+.vd .scr{position:relative;cursor:pointer}
+.play{position:absolute;inset:0;display:grid;place-items:center}
+.play i{width:60px;height:60px;border-radius:50%;border:1.5px solid var(--b3);background:rgba(0,0,0,.5);backdrop-filter:blur(6px);display:grid;place-items:center;transition:transform .3s,box-shadow .3s}
+.vd:hover .play i{transform:scale(1.12);box-shadow:0 0 30px rgba(59,130,246,.6)}
+.play i::after{content:"";margin-left:4px;border-style:solid;border-width:9px 0 9px 15px;border-color:transparent transparent transparent var(--fg)}
+.dur{position:absolute;right:10px;bottom:10px;padding:2px 10px;border-radius:99px;background:rgba(0,0,0,.7);font-size:.75rem;font-weight:600}
+
+.sp{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.sp .tile{padding:28px}
+.sp .tile h3{margin:0}
+.sp .tile p{margin:10px 0 0}
+.end{text-align:center;padding:88px 24px;border:1px solid var(--line);border-radius:24px;background:radial-gradient(ellipse at 50% 0%,rgba(29,78,216,.3),rgba(0,0,0,.6) 70%);margin-top:72px}
+.end h2{font-size:clamp(1.8rem,4vw,3rem)}
+.end p{margin:14px auto 28px;max-width:46ch;color:var(--mut)}
+footer{border-top:1px solid var(--line);padding:32px 0;color:var(--mut);font-size:.88rem;background:#000}
+.fi{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px}
+.fi nav{display:flex;gap:22px}
+.fi a:hover{color:var(--b3)}
+.rv{opacity:0;transform:translateY(28px);transition:opacity 1s,transform 1s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+
+@keyframes rise{from{opacity:0;transform:translateY(34px);filter:blur(12px)}to{opacity:1;transform:none;filter:none}}
+@keyframes shine{to{background-position:-250% 0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(8vw,-6vh) scale(1.2)}}
+
+@media (max-width:900px){.grid,.sp{grid-template-columns:repeat(2,1fr)}.bun{grid-template-columns:1fr}.bk{grid-template-columns:1fr}}
+@media (max-width:760px){
+.mb{display:block}
+.nl{position:absolute;top:68px;left:0;right:0;flex-direction:column;gap:0;background:rgba(0,0,0,.92);border-bottom:1px solid var(--line);display:none;padding:8px 24px}
+.nl.open{display:flex}
+.nl a{padding:14px 0;border-bottom:1px solid rgba(16,34,74,.6)}
+.nb{display:none}}
+@media (max-width:640px){.grid,.sp{grid-template-columns:1fr}.sec{padding:64px 0 72px}.fog{filter:blur(60px)}.bank .scr{flex-basis:90px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+.bun{display:block;padding:14px;margin-bottom:48px}.bun .scr{aspect-ratio:21/8}
+.bank{position:relative;cursor:default}.bank:hover{border-color:var(--line);box-shadow:none}
+.bank>div{min-width:0}
+.bank .scr{position:relative;overflow:hidden;filter:brightness(.4) grayscale(.5)}
+.bank .scr::after{content:"";position:absolute;inset:0;background:linear-gradient(to top right,transparent calc(50% - 1px),#F4F8FF calc(50% - 1px),#F4F8FF calc(50% + 1px),transparent calc(50% + 1px))}
+.bank h3{color:var(--mut);text-decoration:line-through;text-decoration-color:var(--b2)}
+.cs{margin-left:auto;padding:5px 14px;border:1px solid var(--b1);border-radius:99px;font-size:.78rem;font-weight:600;color:var(--b3);background:rgba(29,78,216,.14);white-space:nowrap}
+@media (max-width:640px){.bun .scr{aspect-ratio:16/10}.cs{position:absolute;top:10px;right:10px;margin:0}}
+.sp{grid-template-columns:1fr;max-width:420px}
+.how{list-style:none;counter-reset:st;margin:26px 0 0;padding:0;max-width:56ch;display:grid;gap:10px}
+.how li{counter-increment:st;display:flex;align-items:center;gap:14px;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(160deg,rgba(11,31,77,.32),rgba(0,0,0,.45));color:#B7C3DC;font-weight:300;font-size:.95rem}
+.how li::before{content:counter(st);flex:0 0 28px;height:28px;border-radius:50%;border:1.5px solid var(--b1);display:grid;place-items:center;font-weight:600;font-size:.8rem;color:var(--b3)}
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="fog f1"></div><div class="fog f2"></div>
+
+<header class="nav">
+  <div class="w ni">
+    <a href="#home" class="logo">
+      <svg viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="12" fill="none" stroke="#1D4ED8" stroke-width="1.5"/><circle cx="13" cy="13" r="3.2" fill="#fff"/><circle cx="6" cy="9" r="1.8" fill="#3B82F6"/><circle cx="19.5" cy="8" r="1.4" fill="#8FBBFF"/><circle cx="18" cy="19" r="2" fill="#3B82F6"/><circle cx="7.5" cy="18.5" r="1.2" fill="#fff"/></svg>
+      Darkwave Bundle
+    </a>
+    <nav class="nl" id="nl" aria-label="Navegación principal">
+      <a href="#home">Home</a><a href="#plugins">Plugins</a><a href="#banks">Banks/Presets</a><a href="#videos">Videos</a><a href="#soporte">Soporte</a>
+    </nav>
+    <button class="mb" id="mb" aria-label="Abrir menú" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<main class="main">
+<section class="hero" id="home">
+  <div class="w hc"><h1>Darkwave <span>Bundle</span></h1></div>
+  <div class="hfx"><canvas id="hero" role="img" aria-label="Una onda de audio animada que se dispersa en partículas"></canvas></div>
+  <div class="w hc2">
+    <p class="lead">Mezcla y masteriza sin salir de un mismo paquete: ecualización, saturación, compresión, clipping, limitación y más, pensados para trabajar en cadena de principio a fin.</p>
+    <p class="lead" style="margin-top:16px;font-size:1rem;color:var(--mut)">Cárgalos como cualquier plugin VST3, AU o AAX en tu DAW: en una pista, en un bus o en el master. Puedes usarlos por separado o seguir esta cadena sugerida.</p>
+    <ol class="how">
+      <li>Ecualiza para limpiar y dar forma al tono.</li>
+      <li>Satura y comprime para dar cuerpo y controlar la dinámica.</li>
+      <li>Recorta picos con el Clipper y fija el techo con el Limiter.</li>
+      <li>Añade color y espacio con Multi FX y ajusta el ancho con Stereo Image.</li>
+      <li>Mide con el Loudness Meter y cierra con Mastering.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec" id="plugins">
+  <div class="w">
+    <div class="sh rv">
+      <h2>Nueve plugins, una sola cadena.</h2>
+      <p>Cada plugin resuelve una etapa concreta de la cadena, de la primera ecualización al loudness final, con un tono propio para reconocer cada etapa de un vistazo.</p>
+    </div>
+    <div class="grid">
+      <article class="tile rv" style="--c:#3B82F6"><div class="scr"><canvas data-m="0" data-c="#3B82F6" aria-hidden="true"></canvas></div><h3>Ecualizador</h3><p>Corrige y da forma al espectro con curvas precisas y analizador en vivo.</p><span class="tag">Tono</span></article>
+      <article class="tile rv" style="--c:#FF8A3D"><div class="scr"><canvas data-m="1" data-c="#FF8A3D" aria-hidden="true"></canvas></div><h3>Saturador</h3><p>Añade calor y cuerpo con armónicos que crecen con el drive.</p><span class="tag">Armónicos</span></article>
+      <article class="tile rv" style="--c:#FF4D6D"><div class="scr"><canvas data-m="2" data-c="#FF4D6D" aria-hidden="true"></canvas></div><h3>Clipper</h3><p>Recorta los picos sin pasarte para ganar nivel limpio.</p><span class="tag">Picos</span></article>
+      <article class="tile rv" style="--c:#A78BFA"><div class="scr"><canvas data-m="3" data-c="#A78BFA" aria-hidden="true"></canvas></div><h3>Limiter</h3><p>Fija un techo firme y sube el volumen sin pasarte de 0 dB.</p><span class="tag">Techo</span></article>
+      <article class="tile rv" style="--c:#22D3EE"><div class="scr"><canvas data-m="4" data-c="#22D3EE" aria-hidden="true"></canvas></div><h3>Compressor</h3><p>Controla la dinámica y ve la reducción de ganancia al instante.</p><span class="tag">Dinámica</span></article>
+      <article class="tile rv" style="--c:#E879F9"><div class="scr"><canvas data-m="5" data-c="#E879F9" aria-hidden="true"></canvas></div><h3>Multi FX</h3><p>Encadena efectos de modulación y espacio en un solo módulo.</p><span class="tag">Efectos</span></article>
+      <article class="tile rv" style="--c:#34D399"><div class="scr"><canvas data-m="6" data-c="#34D399" aria-hidden="true"></canvas></div><h3>Loudness Meter</h3><p>Mide el loudness hasta alcanzar el objetivo de cada plataforma.</p><span class="tag">Medición</span></article>
+      <article class="tile rv" style="--c:#FACC15"><div class="scr"><canvas data-m="7" data-c="#FACC15" aria-hidden="true"></canvas></div><h3>Mastering</h3><p>Da el último pulido y lleva la mezcla al nivel final.</p><span class="tag">Acabado</span></article>
+      <article class="tile rv" style="--c:#2DD4BF"><div class="scr"><canvas data-m="8" data-c="#2DD4BF" aria-hidden="true"></canvas></div><h3>Stereo Image</h3><p>Ajusta el ancho y la imagen estéreo viéndola en tiempo real.</p><span class="tag">Estéreo</span></article>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="banks">
+  <div class="w">
+    <div class="sh rv">
+      <h2>Bancos y presets listos para usar.</h2>
+      <p>Coming soon.</p>
+    </div>
+    <div class="bk">
+      <div class="bank rv"><div class="scr"><canvas data-m="10" aria-hidden="true"></canvas></div><div><h3>Voces</h3><p>Cadenas de ecualizador, compresor y saturador para voz.</p></div><span class="cs">Coming soon</span></div>
+      <div class="bank rv"><div class="scr"><canvas data-m="11" aria-hidden="true"></canvas></div><div><h3>Batería y bus</h3><p>Pegamento y pegada para baterías y buses de grupo.</p></div><span class="cs">Coming soon</span></div>
+      <div class="bank rv"><div class="scr"><canvas data-m="12" aria-hidden="true"></canvas></div><div><h3>Mezcla general</h3><p>Puntos de partida para equilibrar la mezcla completa.</p></div><span class="cs">Coming soon</span></div>
+      <div class="bank rv"><div class="scr"><canvas data-m="13" aria-hidden="true"></canvas></div><div><h3>Masterización</h3><p>Cadenas finales con limitación y loudness objetivo.</p></div><span class="cs">Coming soon</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="videos">
+  <div class="w">
+    <div class="sh rv">
+      <h2>Aprende viendo cómo suena.</h2>
+      <p>Tutoriales cortos de cada etapa de la cadena.</p>
+    </div>
+    <div class="grid">
+      <article class="tile vd rv" style="--c:#3B82F6"><div class="scr"><canvas data-m="0" data-c="#3B82F6" aria-hidden="true"></canvas><div class="play"><i></i></div></div><h3>Mezcla de principio a fin</h3><p>Recorre la cadena desde el ecualizador hasta el final.</p></article>
+      <article class="tile vd rv" style="--c:#22D3EE"><div class="scr"><canvas data-m="4" data-c="#22D3EE" aria-hidden="true"></canvas><div class="play"><i></i></div></div><h3>Compresión con control</h3><p>Ajusta umbral y reducción de ganancia con criterio.</p></article>
+      <article class="tile vd rv" style="--c:#FACC15"><div class="scr"><canvas data-m="7" data-c="#FACC15" aria-hidden="true"></canvas><div class="play"><i></i></div></div><h3>Masterización hasta el loudness final</h3><p>Cierra la mezcla y mide el resultado.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="soporte">
+  <div class="w">
+    <div class="sh rv">
+      <h2>Videos de soporte</h2>
+    </div>
+    <div class="sp">
+      <article class="tile rv"><h3>Contacto</h3><p>Escríbenos y cuéntanos qué DAW usas para ayudarte más rápido: soporte@tudominio.com</p></article>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="w fi"><span>© 2026 Darkwave Bundle</span></div></footer>
+
+<script>
+(function(){
+  var P=['#F4F8FF','#8FBBFF','#3B82F6','#1D4ED8'],PI=Math.PI,sin=Math.sin,cos=Math.cos;
+  var RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function R(s){return function(){s=(s*16807)%2147483647;return s/2147483647}}
+  function det(k,o){var v=sin(k*127.1+(o||0)*311.7)*43758.5453;return v-Math.floor(v)}
+  var spr={};
+  function sp(c){if(spr[c])return spr[c];var k=document.createElement('canvas');k.width=k.height=64;var x=k.getContext('2d'),g=x.createRadialGradient(32,32,0,32,32,32);
+    g.addColorStop(0,c);g.addColorStop(.16,c);g.addColorStop(.4,c+'55');g.addColorStop(1,c+'00');x.fillStyle=g;x.fillRect(0,0,64,64);return spr[c]=k}
+  function dot(x,c,px,py,r,a){if(a<=0)return;x.globalAlpha=Math.min(1,a);x.drawImage(sp(c),px-r,py-r,r*2,r*2)}
+
+  var items=[];
+  function fit(it){
+    var c=it.c,d=Math.min(window.devicePixelRatio||1,3),r=c.getBoundingClientRect();
+    c.width=Math.max(1,Math.round(r.width*d));c.height=Math.max(1,Math.round(r.height*d));
+    it.x=c.getContext('2d');it.x.setTransform(d,0,0,d,0,0);it.w=r.width;it.h=r.height;
+  }
+  function add(c,fn,init){var it={c:c,fn:fn,vis:true,s:{}};if(init)init(it.s);fit(it);items.push(it);return it}
+
+  /* Fondo */
+  add(document.getElementById('bg'),function(x,w,h,t,s,dt){
+    x.clearRect(0,0,w,h);x.globalCompositeOperation='lighter';
+    var sy=(window.scrollY||0)*.12;
+    for(var i=0;i<s.p.length;i++){var p=s.p[i];p.y-=p.v*dt;p.x+=sin(t*.3+p.o)*.12;if(p.y<-20)p.y=h+20;
+      var py=((p.y-sy*p.z)%(h+40)+(h+40))%(h+40)-20;
+      dot(x,p.c,p.x*w/1000,py,p.r*p.z*3,(.25+.5*(.5+.5*sin(t*p.f+p.o)))*p.z)}
+    x.globalAlpha=1;
+  },function(s){var r=R(21);s.p=[];for(var i=0;i<110;i++)s.p.push({x:r()*1000,y:r()*1000,v:4+r()*14,o:r()*6.28,f:.4+r()*1.4,z:.3+r()*.9,r:1+r()*2.2,c:P[Math.floor(r()*4)]})});
+  items[0].s.bg=1;
+
+  /* Hero: onda + granos */
+  add(document.getElementById('hero'),function(x,w,h,t,s,dt){
+    x.clearRect(0,0,w,h);x.globalCompositeOperation='lighter';
+    var cy=h*.5,N=s.b.length,amp=Math.min(h*.3,120),i,e,hh,px;
+    x.lineCap='round';x.lineWidth=Math.max(1.2,w/N*.3);
+    var g=x.createLinearGradient(0,0,w,0);g.addColorStop(0,'rgba(29,78,216,.05)');g.addColorStop(.3,'rgba(29,78,216,.32)');g.addColorStop(.55,'rgba(59,130,246,.36)');g.addColorStop(.8,'rgba(143,187,255,.26)');g.addColorStop(1,'rgba(143,187,255,.04)');
+    x.strokeStyle=g;x.beginPath();
+    for(i=0;i<N;i++){px=w*(i+.5)/N;e=sin(PI*i/(N-1))*.6+.4;hh=amp*e*s.b[i]*(.72+.28*sin(t*1.4+i*.33));x.moveTo(px,cy-hh);x.lineTo(px,cy+hh)}
+    x.stroke();
+    /* ondas senoidales superpuestas */
+    x.lineWidth=1.4;
+    for(var k=0;k<3;k++){x.strokeStyle=['rgba(244,248,255,.5)','rgba(143,187,255,.4)','rgba(59,130,246,.45)'][k];x.beginPath();
+      for(var j=0;j<=80;j++){var X=w*j/80,env=sin(PI*j/80),Y=cy+sin(j*.28*(k+1)+t*(1+k*.5))*amp*.55*env/(k+1);j?x.lineTo(X,Y):x.moveTo(X,Y)}x.stroke()}
+    var rr=s.r,cap=w<700?200:420;
+    if(s.p.length<cap){var up=rr()<.5?-1:1;s.p.push({x:rr()*w,y:cy+(rr()-.5)*amp*1.4,vx:(rr()-.5)*8,vy:up*(4+rr()*22),a:0,l:4+rr()*5,r:1+rr()*1.8,c:P[Math.floor(rr()*3)]})}
+    for(i=s.p.length-1;i>=0;i--){var p=s.p[i];p.a+=dt;
+      if(p.a>p.l||p.y<-30||p.y>h+30){s.p[i]=s.p[s.p.length-1];s.p.pop();continue}
+      p.x+=p.vx*dt;p.y+=p.vy*dt;var al=sin(PI*p.a/p.l)*.28;dot(x,p.c,p.x,p.y,p.r*3.6,al)}
+    x.globalAlpha=1;
+  },function(s){s.r=R(99);s.p=[];var r=R(7);s.b=[];for(var i=0;i<150;i++)s.b.push(.25+.75*r())});
+
+  /* Escenas de plugins */
+  var TC=['#3B82F6','#FF8A3D','#FF4D6D','#A78BFA','#22D3EE','#E879F9','#34D399','#FACC15','#2DD4BF'];
+  function pre(x,w,h){x.clearRect(0,0,w,h);x.globalCompositeOperation='lighter';x.lineCap='round';x.lineJoin='round'}
+  function grid(x,w,h){x.globalAlpha=.4;x.strokeStyle='#10224A';x.lineWidth=1;for(var i=1;i<4;i++){x.beginPath();x.moveTo(w*.06,h*i/4);x.lineTo(w*.94,h*i/4);x.stroke()}}
+  function wave(x,w,h,fn){x.beginPath();for(var j=0;j<=90;j++){var X=w*.06+w*.88*j/90,Y=fn(j/90,X);j?x.lineTo(X,Y):x.moveTo(X,Y)}x.stroke()}
+  function vl(x,x0,y0,y1){x.beginPath();x.moveTo(x0,y0);x.lineTo(x0,y1);x.stroke()}
+  var sc=[
+  function(x,w,h,t,s){ /* Ecualizador */
+    pre(x,w,h);grid(x,w,h);var b=h*.85,c=s.c,fc=.5+.3*sin(t*.5),g=sin(t*.8),i;
+    for(i=0;i<40;i++){var u=i/39,px=w*.06+w*.88*u,v=(.25+.75*det(i,s.sd))*(.6+.4*sin(t*1.6+i*.5))*h*.4*(1-u*.5)+4;x.strokeStyle=c;x.globalAlpha=.35;x.lineWidth=w/40*.5;vl(x,px,b,b-v)}
+    x.globalAlpha=.95;x.strokeStyle='#F4F8FF';x.lineWidth=2;wave(x,w,h,function(u){return h*.5-Math.exp(-Math.pow((u-fc)*7,2))*h*.3*g});
+    dot(x,c,w*.06+w*.88*fc,h*.5-h*.3*g,12,1);x.globalAlpha=1},
+  function(x,w,h,t,s){ /* Saturador */
+    pre(x,w,h);var cy=h/2,A=h*.34,d=1+5*(.5+.5*sin(t*.6)),c=s.c;
+    x.globalAlpha=.3;x.strokeStyle='#F4F8FF';x.lineWidth=1.2;wave(x,w,h,function(u){return cy-sin(u*18-t*2)*A});
+    x.globalAlpha=1;x.strokeStyle=c;x.lineWidth=2.6;wave(x,w,h,function(u){return cy-Math.tanh(sin(u*18-t*2)*d)/Math.tanh(d)*A});
+    dot(x,c,w*.5,cy,w*.4,.12);x.globalAlpha=1},
+  function(x,w,h,t,s){ /* Clipper */
+    pre(x,w,h);var cy=h/2,A=h*.28,th=h*.2,c=s.c,g=1+1.2*(.5+.5*sin(t*.7));
+    x.globalAlpha=.7;x.strokeStyle='#8D9BB8';x.setLineDash([4,5]);x.lineWidth=1;[cy-th,cy+th].forEach(function(y){x.beginPath();x.moveTo(w*.06,y);x.lineTo(w*.94,y);x.stroke()});x.setLineDash([]);
+    x.globalAlpha=.25;x.strokeStyle='#F4F8FF';wave(x,w,h,function(u){return cy-sin(u*14-t*2)*A*g});
+    x.globalAlpha=1;x.strokeStyle=c;x.lineWidth=2.8;wave(x,w,h,function(u){return cy-Math.max(-th,Math.min(th,sin(u*14-t*2)*A*g))});x.globalAlpha=1},
+  function(x,w,h,t,s){ /* Limiter */
+    pre(x,w,h);var cy=h*.55,ce=h*.2,c=s.c,n=44,i;
+    x.strokeStyle=c;x.globalAlpha=.9;x.lineWidth=1.5;x.beginPath();x.moveTo(w*.06,cy-ce);x.lineTo(w*.94,cy-ce);x.moveTo(w*.06,cy+ce);x.lineTo(w*.94,cy+ce);x.stroke();
+    for(i=0;i<n;i++){var px=w*.06+w*.88*i/(n-1),raw=h*.45*(.2+.8*det(i,s.sd))*(.7+.3*sin(t*2+i*.4))*(1+.4*sin(t*.5)),hh=Math.min(raw,ce),hit=raw>ce;
+      x.globalAlpha=hit?1:.5;x.strokeStyle=hit?'#F4F8FF':c;x.lineWidth=2.4;vl(x,px,cy-hh,cy+hh);if(hit)dot(x,c,px,cy-ce,9,.8)}
+    x.globalAlpha=1},
+  function(x,w,h,t,s){ /* Compressor */
+    pre(x,w,h);var cy=h*.5,th=h*.14,c=s.c,n=38,gr=0,i;
+    for(i=0;i<n;i++){var px=w*.06+w*.78*i/(n-1),raw=h*.4*(.15+.85*det(i,s.sd))*(.7+.3*sin(t*1.8+i*.5)),hh=raw>th?th+(raw-th)*.3:raw;gr=Math.max(gr,raw-hh);
+      x.lineWidth=2.4;x.globalAlpha=.25;x.strokeStyle='#F4F8FF';vl(x,px,cy-raw,cy+raw);x.globalAlpha=.95;x.strokeStyle=c;vl(x,px,cy-hh,cy+hh)}
+    x.globalAlpha=.6;x.strokeStyle='#8D9BB8';x.lineWidth=1;x.setLineDash([4,5]);x.beginPath();x.moveTo(w*.06,cy-th);x.lineTo(w*.84,cy-th);x.moveTo(w*.06,cy+th);x.lineTo(w*.84,cy+th);x.stroke();x.setLineDash([]);
+    x.globalAlpha=.9;x.lineWidth=6;x.strokeStyle='#10224A';vl(x,w*.91,h*.1,h*.9);x.strokeStyle=c;vl(x,w*.91,h*.1,h*.1+Math.min(h*.8,gr*2.4));x.globalAlpha=1},
+  function(x,w,h,t,s){ /* Multi FX */
+    pre(x,w,h);var c=s.c,cy=h/2,bw=w*.2,bh=h*.42,xs=[.2,.5,.8],k,i;
+    x.globalAlpha=.5;x.strokeStyle='#1D4ED8';x.lineWidth=1.5;x.beginPath();x.moveTo(w*.03,cy);x.lineTo(w*.97,cy);x.stroke();
+    for(k=0;k<3;k++){var bx=w*xs[k]-bw/2;x.globalAlpha=.9;x.strokeStyle=c;x.lineWidth=1.5;x.beginPath();x.roundRect(bx,cy-bh/2,bw,bh,8);x.stroke();x.lineWidth=2;x.beginPath();
+      for(i=0;i<=24;i++){var u=i/24,X=bx+bw*.12+bw*.76*u,Y=k==0?cy+sin(u*12+t*3)*bh*.22:k==1?cy+bh*.2-(u<.5?u:1-u)*bh*.8*(.5+.5*sin(t*2)):cy+(det(Math.floor(u*10),k)-.5)*bh*.5*(.6+.4*sin(t*3));i?x.lineTo(X,Y):x.moveTo(X,Y)}x.stroke()}
+    for(i=0;i<4;i++){var ph=(t*.35+i/4)%1;dot(x,'#F4F8FF',w*(.03+.94*ph),cy,7,.9)}x.globalAlpha=1},
+  function(x,w,h,t,s){ /* Loudness Meter */
+    pre(x,w,h);var c=s.c,seg=16,top=h*.1,bot=h*.9,sh=(bot-top)/seg,ch,i;
+    for(ch=0;ch<2;ch++){var lv=.55+.3*sin(t*1.3+ch*1.4)+.1*sin(t*3.7+ch),bx=w*(.12+ch*.12);
+      for(i=0;i<seg;i++){var on=i/seg<lv;x.globalAlpha=on?.95:.12;x.fillStyle=i/seg>.8?'#FF4D6D':c;x.beginPath();x.roundRect(bx,bot-(i+1)*sh+2,w*.09,sh-4,2);x.fill()}}
+    x.globalAlpha=.8;x.strokeStyle='#F4F8FF';x.setLineDash([4,5]);x.lineWidth=1;x.beginPath();x.moveTo(w*.08,top+sh*3.2);x.lineTo(w*.94,top+sh*3.2);x.stroke();x.setLineDash([]);
+    x.globalAlpha=1;x.strokeStyle=c;x.lineWidth=2.2;x.beginPath();
+    for(i=0;i<=50;i++){var X=w*.46+w*.48*i/50,Y=h*.56-(.12+.1*sin(i*.3+t*1.5)+.05*sin(i*.9-t))*h;i?x.lineTo(X,Y):x.moveTo(X,Y)}x.stroke();x.globalAlpha=1},
+  function(x,w,h,t,s){ /* Mastering */
+    pre(x,w,h);var cy=h/2,c=s.c,n=50,sx=w*.06+w*.88*((t*.25)%1),i;
+    for(i=0;i<n;i++){var px=w*.06+w*.88*i/(n-1),base=h*.14*(.3+.7*det(i,s.sd))*(.7+.3*sin(t*2+i*.4)),dn=px<sx,hh=dn?Math.min(h*.36,base*2.1+h*.05):base;
+      x.globalAlpha=dn?.95:.4;x.strokeStyle=dn?c:'#8D9BB8';x.lineWidth=2.4;vl(x,px,cy-hh,cy+hh)}
+    var g=x.createLinearGradient(0,h*.05,0,h*.95);g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(.5,'rgba(244,248,255,.95)');g.addColorStop(1,'rgba(255,255,255,0)');
+    x.globalAlpha=1;x.strokeStyle=g;x.lineWidth=2;vl(x,sx,h*.05,h*.95);dot(x,c,sx,cy,22,.7);x.globalAlpha=1},
+  function(x,w,h,t,s){ /* Stereo Image */
+    pre(x,w,h);var cx=w/2,cy=h/2,c=s.c,m=Math.min(w,h)*.42,wd=.35+.65*(.5+.5*sin(t*.5)),i;
+    x.globalAlpha=.45;x.strokeStyle='#1D4ED8';x.lineWidth=1;vl(x,cx,cy-m,cy+m);x.beginPath();x.moveTo(cx-m*1.3,cy);x.lineTo(cx+m*1.3,cy);x.stroke();x.beginPath();x.ellipse(cx,cy,m*1.3*wd+4,m,0,0,7);x.stroke();
+    for(i=0;i<120;i++){var a=det(i,s.sd)*6.283+t*.4,r=Math.sqrt(det(i,2))*(.4+.6*(.5+.5*sin(t*1.5+i)));dot(x,i%5?c:'#F4F8FF',cx+cos(a)*r*m*1.3*wd,cy+sin(a)*r*m,3+det(i,3)*4,.6)}
+    dot(x,c,cx-m*1.3*wd,cy,10,.9);dot(x,c,cx+m*1.3*wd,cy,10,.9);x.globalAlpha=1},
+  function(x,w,h,t,s){ /* Bundle: cadena completa */
+    pre(x,w,h);var n=9,cy=h*.5,X=[],Y=[],i;
+    for(i=0;i<n;i++){X.push(w*(.08+.84*i/(n-1)));Y.push(cy+sin(t*.8+i*.9)*h*.16)}
+    x.globalAlpha=.6;x.strokeStyle='#1D4ED8';x.lineWidth=1.5;x.beginPath();for(i=0;i<n;i++)i?x.lineTo(X[i],Y[i]):x.moveTo(X[i],Y[i]);x.stroke();
+    var q=((t*.5)%1)*(n-1);
+    for(i=0;i<n;i++){var pl=Math.max(0,1-Math.abs(q-i));dot(x,TC[i],X[i],Y[i],22+pl*18,.55+.45*pl);dot(x,'#F4F8FF',X[i],Y[i],5,.9)}
+    var k=Math.floor(q),f=q-k;if(k<n-1)dot(x,'#F4F8FF',X[k]+(X[k+1]-X[k])*f,Y[k]+(Y[k+1]-Y[k])*f,9,1);x.globalAlpha=1}
+  ];
+  function bank(k){return function(x,w,h,t,s){pre(x,w,h);var cx=w/2,cy=h/2;
+    for(var i=0;i<26;i++){var a=det(i,k)*6.283+t*(.1+det(i,k+3)*.3)*(k%2?-1:1),d=(.2+.7*det(i,k+1))*Math.min(w,h)*.45;dot(x,TC[(i+k)%9],cx+cos(a)*d,cy+sin(a)*d,4+det(i,k+2)*9,.4+.5*sin(t+i)*sin(t+i))}
+    dot(x,P[0],cx,cy,10+k%3*3,.9);x.globalAlpha=1}}
+  sc.push(bank(1),bank(2),bank(3),bank(4));
+
+  document.querySelectorAll('canvas[data-m]').forEach(function(c){
+    var it=add(c,sc[+c.dataset.m],function(s){s.sd=+c.dataset.m*7+3;s.c=c.dataset.c||'#3B82F6'});it.vis=false;
+  });
+
+  
+var io=new IntersectionObserver(function(es){es.forEach(function(e){for(var i=0;i<items.length;i++)if(items[i].c===e.target)items[i].vis=e.isIntersecting})},{rootMargin:'80px'});
+  items.forEach(function(it){if(it.c.id!=='bg')io.observe(it.c)});
+  var last=performance.now();
+  function draw(now,dt){var t=now/1000;for(var i=0;i<items.length;i++){var it=items[i];if(!it.vis)continue;it.x.globalCompositeOperation='source-over';it.x.globalAlpha=1;it.fn(it.x,it.w,it.h,t,it.s,dt)}}
+  function loop(now){var dt=Math.min(.05,(now-last)/1000);last=now;draw(now,dt);requestAnimationFrame(loop)}
+  var rz;addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(function(){items.forEach(fit);if(RM)draw(3000,0)},150)});
+  if(RM){draw(3000,.016)}else{requestAnimationFrame(loop)}
+
+  /* Menú móvil */
+  var mb=document.getElementById('mb'),nl=document.getElementById('nl');
+  mb.addEventListener('click',function(){var o=nl.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
+  nl.addEventListener('click',function(e){if(e.target.tagName==='A'){nl.classList.remove('open');mb.setAttribute('aria-expanded',false)}});
+
+  /* Revelado */
+  var ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}})},{threshold:.15});
+  document.querySelectorAll('.rv').forEach(function(el,i){el.style.transitionDelay=(i%3)*90+'ms';ro.observe(el)});
+})();
+</script>
+</body>
+</html>
